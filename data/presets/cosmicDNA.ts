@@ -72,7 +72,7 @@ export const cosmicDNAPreset: Preset = {
         "backgroundColor2": "#370617",
         "useGradientBackground": true,
         "isSkyboxEnabled": true,
-        "skyboxImage": "/public/images/spaceBg1.jpg",
+        "skyboxImage": "images/spaceBg1.jpg",
         "skyboxOpacity": 0.7
     }
 };

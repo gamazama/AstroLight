@@ -77,7 +77,7 @@ export const galacticDriftPreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": true,
         "skyboxOpacity": 0.7,
-        "skyboxImage": "/public/images/spaceBg1.jpg",
+        "skyboxImage": "images/spaceBg1.jpg",
         "showNebula": true,
         "nebulaOpacity": 0.12,
         "nebulaParticleSize": 100,

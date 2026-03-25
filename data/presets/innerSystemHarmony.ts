@@ -78,7 +78,7 @@ export const innerSystemHarmonyPreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": false,
         "skyboxOpacity": 1,
-        "skyboxImage": "/public/images/milkyway.jpg",
+        "skyboxImage": "images/milkyway.jpg",
         "showNebula": true,
         "nebulaOpacity": 0.020417379446695298,
         "nebulaParticleSize": 361,

@@ -151,7 +151,7 @@ export const jovianDancePreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": true,
         "skyboxOpacity": 0.8,
-        "skyboxImage": "/public/images/spaceBg3.jpg",
+        "skyboxImage": "images/spaceBg3.jpg",
         "showNebula": true,
         "nebulaOpacity": 0.03890451449942807,
         "nebulaParticleSize": 150,

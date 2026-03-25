@@ -88,7 +88,7 @@ export const eclipticPlanePreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": true,
         "skyboxOpacity": 0.41,
-        "skyboxImage": "/public/images/spaceBg3.jpg",
+        "skyboxImage": "images/spaceBg3.jpg",
         "showNebula": false,
         "nebulaOpacity": 0.12,
         "nebulaParticleSize": 100,

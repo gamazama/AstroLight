@@ -145,7 +145,7 @@ export const initialBackgroundState: BackgroundState = {
     showBackgroundColor: true,
     isSkyboxEnabled: false,
     skyboxOpacity: 1,
-    skyboxImage: '/public/images/milkyway.jpg',
+    skyboxImage: `${import.meta.env.BASE_URL}images/milkyway.jpg`,
     nebulaOpacity: 0.12,
     nebulaParticleSize: 100,
     nebulaYOffset: 0,

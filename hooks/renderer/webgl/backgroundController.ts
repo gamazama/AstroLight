@@ -5,8 +5,8 @@ import { createGradientPlane } from './objects/scenePrimitives';
 import { createNebula } from './objects/nebula';
 import { createWebGLStars, MAX_WEBGL_STARS } from './objects/starfield';
 import { threeJsBridge } from '../threeJsBridge';
-import { SKYBOX_IMAGES } from '../../../../data/skyboxData';
-import { useAppStore } from '../../../../store/appStore';
+import { SKYBOX_IMAGES } from '../../../data/skyboxData';
+import { useAppStore } from '../../../store/appStore';
 import { skyboxVertexShader, skyboxFragmentShader } from './shaders/skybox';
 
 const textureCache = new Map<string, THREE.Texture>();
@@ -78,13 +78,21 @@ const shouldPreload = (): boolean => {
     return true;
 };
 
+function resolveAssetUrl(url: string): string {
+    const base = import.meta.env.BASE_URL;
+    // Already absolute with base prefix, or a full URL — use as-is
+    if (url.startsWith(base) || url.startsWith('http')) return url;
+    // Strip leading slash if present, then prepend base
+    return base + url.replace(/^\//, '');
+}
+
 async function loadAndCacheTexture(imageUrl: string): Promise<THREE.Texture | null> {
     if (textureCache.has(imageUrl)) {
         return textureCache.get(imageUrl)!;
     }
 
     try {
-        const response = await fetch(imageUrl);
+        const response = await fetch(resolveAssetUrl(imageUrl));
         if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
         const blob = await response.blob();
 

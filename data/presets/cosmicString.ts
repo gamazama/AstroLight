@@ -78,7 +78,7 @@ export const cosmicStringPreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": true,
         "skyboxOpacity": 0.72,
-        "skyboxImage": "/public/images/spaceBg2.jpg",
+        "skyboxImage": "images/spaceBg2.jpg",
         "showNebula": true,
         "nebulaOpacity": 0.04808393484497289,
         "nebulaParticleSize": 64,

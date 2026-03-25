@@ -77,7 +77,7 @@ export const kuiperEchoesPreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": true,
         "skyboxOpacity": 0.5,
-        "skyboxImage": "/public/images/milkyway.jpg",
+        "skyboxImage": "images/milkyway.jpg",
         "showNebula": true,
         "nebulaOpacity": 0.03,
         "nebulaParticleSize": 200,

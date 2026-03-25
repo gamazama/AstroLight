@@ -46,37 +46,38 @@ export const useSoundEngine = () => {
             const context = new (window.AudioContext || (window as any).webkitAudioContext)();
             audioContextRef.current = context;
 
+            const base = import.meta.env.BASE_URL;
             const workletURLs = [
                 // DSP classes must be loaded first as they are dependencies
-                '/public/worklet/dsp/BiquadFilter.js',
-                '/public/worklet/dsp/FDNReverb.js',
+                `${base}worklet/dsp/BiquadFilter.js`,
+                `${base}worklet/dsp/FDNReverb.js`,
                 // Utility functions used by the processor and node logic
-                '/public/worklet/utils/graph.js',
-                '/public/worklet/utils/wavetable.js',
-                '/public/worklet/utils/processor.js',
+                `${base}worklet/utils/graph.js`,
+                `${base}worklet/utils/wavetable.js`,
+                `${base}worklet/utils/processor.js`,
                 // Individual node processing logic files
-                '/public/worklet/node-processors/dataSource.js',
-                '/public/worklet/node-processors/interaction.js',
-                '/public/worklet/node-processors/staticSource.js',
-                '/public/worklet/node-processors/parameter.js',
-                '/public/worklet/node-processors/lfo.js',
-                '/public/worklet/node-processors/curve.js', 
-                '/public/worklet/node-processors/oscillator.js',
-                '/public/worklet/node-processors/crossOscillator.js',
-                '/public/worklet/node-processors/math.js',
-                '/public/worklet/node-processors/gain.js',
-                '/public/worklet/node-processors/pan.js',
-                '/public/worklet/node-processors/mixer.js',
-                '/public/worklet/node-processors/filter.js',
-                '/public/worklet/node-processors/delay.js',
-                '/public/worklet/node-processors/reverb.js',
-                '/public/worklet/node-processors/output.js',
-                '/public/worklet/node-processors/oscilloscope.js',
-                '/public/worklet/node-processors/waveshaper.js',
-                '/public/worklet/node-processors/cosmicOctaver.js',
-                '/public/worklet/node-processors/rerouter.js',
+                `${base}worklet/node-processors/dataSource.js`,
+                `${base}worklet/node-processors/interaction.js`,
+                `${base}worklet/node-processors/staticSource.js`,
+                `${base}worklet/node-processors/parameter.js`,
+                `${base}worklet/node-processors/lfo.js`,
+                `${base}worklet/node-processors/curve.js`,
+                `${base}worklet/node-processors/oscillator.js`,
+                `${base}worklet/node-processors/crossOscillator.js`,
+                `${base}worklet/node-processors/math.js`,
+                `${base}worklet/node-processors/gain.js`,
+                `${base}worklet/node-processors/pan.js`,
+                `${base}worklet/node-processors/mixer.js`,
+                `${base}worklet/node-processors/filter.js`,
+                `${base}worklet/node-processors/delay.js`,
+                `${base}worklet/node-processors/reverb.js`,
+                `${base}worklet/node-processors/output.js`,
+                `${base}worklet/node-processors/oscilloscope.js`,
+                `${base}worklet/node-processors/waveshaper.js`,
+                `${base}worklet/node-processors/cosmicOctaver.js`,
+                `${base}worklet/node-processors/rerouter.js`,
                 // The main processor class, which depends on all of the above
-                '/public/worklet/LineSoundProcessor.js'
+                `${base}worklet/LineSoundProcessor.js`
             ];
             
             let blobUrl = '';

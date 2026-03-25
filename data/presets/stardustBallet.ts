@@ -153,7 +153,7 @@ export const stardustBalletPreset: Preset = {
     "showBackgroundColor": true,
     "isSkyboxEnabled": true,
     "skyboxOpacity": 0.46,
-    "skyboxImage": "/public/images/milkyway.jpg",
+    "skyboxImage": "images/milkyway.jpg",
     "showNebula": false,
     "nebulaOpacity": 0.12,
     "nebulaParticleSize": 100,

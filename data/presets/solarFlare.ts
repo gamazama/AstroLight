@@ -146,7 +146,7 @@ export const solarFlarePreset: Preset = {
     "showBackgroundColor": true,
     "isSkyboxEnabled": false,
     "skyboxOpacity": 1,
-    "skyboxImage": "/public/images/milkyway.jpg",
+    "skyboxImage": "images/milkyway.jpg",
     "showNebula": true,
     "nebulaOpacity": 0.0235504928389601,
     "nebulaParticleSize": 200,

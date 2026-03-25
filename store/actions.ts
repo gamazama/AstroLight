@@ -2,7 +2,7 @@ import type { StoreSet, StoreGet, Actions } from '../appStore';
 import { createConnectionActions } from './actions/connections';
 import { createConfigActions } from './actions/config';
 import { createCoreActions } from './actions/core';
-import { createSoundActions } from '../../AstroSound/soundStore';
+import { createSoundActions } from '../AstroSound/soundStore';
 import { createTutorialActions } from './actions/tutorial';
 import { createUIActions } from './actions/ui';
 import { createVisualsAndPhysicsActions } from './actions/visuals';

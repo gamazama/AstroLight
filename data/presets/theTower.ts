@@ -89,7 +89,7 @@ export const theTowerPreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": true,
         "skyboxOpacity": 0.5,
-        "skyboxImage": "/public/images/milkyway.jpg",
+        "skyboxImage": "images/milkyway.jpg",
         "showNebula": true,
         "nebulaOpacity": 0.05675446054085474,
         "nebulaParticleSize": 100,

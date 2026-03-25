@@ -76,7 +76,7 @@ export const goldenSpiralPreset: Preset = {
         "showBackgroundColor": true,
         "isSkyboxEnabled": false,
         "skyboxOpacity": 1,
-        "skyboxImage": "/public/images/milkyway.jpg",
+        "skyboxImage": "images/milkyway.jpg",
         "showNebula": false,
         "nebulaOpacity": 0.12,
         "nebulaParticleSize": 100,
