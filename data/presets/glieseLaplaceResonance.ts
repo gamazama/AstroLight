@@ -15,7 +15,7 @@ export const glieseLaplaceResonancePreset: Preset = {
         { "id": 1764056094324.1926, "from": 2, "to": 4, "color": "#F39C12", "persistenceMultiplier": 50 }
     ],
     "settings": {
-        "startDate": "2025-11-24T21:37:28.338Z",
+        "startDate": new Date("2025-11-24T21:37:28.338Z"),
         "endDate": null,
         "timeSpeed": 0.794,
         "useRealisticPhysics": false,

@@ -45,7 +45,7 @@ const App: React.FC = () => {
     useSoundEngine();
     usePresetTransition();
     usePhysicsTransition();
-    usePerformanceOptimization(); // New Hook
+    usePerformanceOptimization();
 
     // Effect to handle loading shared configurations from URL on app start
     useEffect(() => {

@@ -88,7 +88,7 @@ export const solarFlarePreset: Preset = {
     }
   ],
   "settings": {
-    "startDate": "2025-11-25T11:38:00.210Z",
+    "startDate": new Date("2025-11-25T11:38:00.210Z"),
     "endDate": null,
     "timeSpeed": 274.158,
     "useRealisticPhysics": false,

@@ -24,7 +24,40 @@ import AboutContent from './AboutContent';
 import BackgroundLoader from './BackgroundLoader';
 
 const UIOverlays: React.FC = () => {
-    const appState = useAppStore(state => state, shallow);
+    const appState = useAppStore(state => ({
+        // Scrub indicators
+        isSpeedScrubbing: state.isSpeedScrubbing,
+        timeSpeed: state.timeSpeed,
+        isZOffsetScrubbing: state.isZOffsetScrubbing,
+        targetZOffset: state.targetZOffset,
+        isDriftScrubbing: state.isDriftScrubbing,
+        lineZDriftSpeed: state.lineZDriftSpeed,
+        isFovScrubbing: state.isFovScrubbing,
+        targetFov: state.targetFov,
+        mousePosition: state.mousePosition,
+        // UI panels / modals
+        isSoundCreator2Open: state.isSoundCreator2Open,
+        isFullscreen: state.isFullscreen,
+        uiGuidePulse: state.uiGuidePulse,
+        controlCircle: state.controlCircle,
+        showIntroScreen: state.showIntroScreen,
+        isStartDatePickerOpen: state.isStartDatePickerOpen,
+        isEndDatePickerOpen: state.isEndDatePickerOpen,
+        startDate: state.startDate,
+        endDate: state.endDate,
+        colorPicker: state.colorPicker,
+        connectionLine: state.connectionLine,
+        notification: state.notification,
+        tooltip: state.tooltip,
+        planetEditorPanels: state.planetEditorPanels,
+        isAboutModalOpen: state.isAboutModalOpen,
+        isSaveInstrumentModalOpen: state.isSaveInstrumentModalOpen,
+        instrumentToSaveInfo: state.instrumentToSaveInfo,
+        instrumentDataModalContent: state.instrumentDataModalContent,
+        isShortcutsModalOpen: state.isShortcutsModalOpen,
+        // Actions
+        actions: state.actions,
+    }), shallow);
     const { actions } = appState;
 
     const prevIsSoundCreator2Open = useRef(appState.isSoundCreator2Open);

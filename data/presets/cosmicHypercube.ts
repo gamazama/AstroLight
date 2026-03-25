@@ -31,7 +31,7 @@ export const cosmicHypercubePreset: Preset = {
         { "id": 12, "from": 4, "to": 8, "color": "#9B1DCD", "persistenceMultiplier": 1 }
     ],
     "settings": {
-        "startDate": "2025-11-25T06:55:10.575Z",
+        "startDate": new Date("2025-11-25T06:55:10.575Z"),
         "endDate": null,
         "timeSpeed": 5,
         "useRealisticPhysics": false,

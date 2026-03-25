@@ -20,7 +20,7 @@ export const cosmicStringPreset: Preset = {
         { "id": 708, "from": 7, "to": 8, "color": "#4FD0E0", "persistenceMultiplier": 10 }
     ],
     "settings": {
-        "startDate": "2025-11-24T21:41:27.899Z",
+        "startDate": new Date("2025-11-24T21:41:27.899Z"),
         "endDate": null,
         "timeSpeed": 356.451,
         "useRealisticPhysics": false,

@@ -19,7 +19,7 @@ export const kuiperEchoesPreset: Preset = {
         { "id": 809, "from": 8, "to": 9, "color": "#4B70DD", "persistenceMultiplier": 30 }
     ],
     "settings": {
-        "startDate": "2025-11-24T21:37:28.338Z",
+        "startDate": new Date("2025-11-24T21:37:28.338Z"),
         "endDate": null,
         "timeSpeed": 85.901,
         "useRealisticPhysics": false,

@@ -42,11 +42,20 @@ const drawPlanets = (
     const isCreatingConnection = state.connectingNodeId !== null || state.canvasConnectingFromNodeId !== null;
     const hasNoConnections = state.connections.length === 0;
 
+    const now = performance.now(); // Cache once per frame for hover animations
+
+    // Build a Set of connected planet IDs for O(1) lookup instead of O(n) .some() per planet
+    const connectedPlanetIds = new Set<number>();
+    for (let i = 0; i < state.connections.length; i++) {
+        connectedPlanetIds.add(state.connections[i].from);
+        connectedPlanetIds.add(state.connections[i].to);
+    }
+
     planetNodesToDraw.forEach(node => {
         const planet = getCelestialBody(node.name);
         if (!planet) return;
 
-        const isPlanetConnected = state.connections.some(c => c.from === node.id || c.to === node.id);
+        const isPlanetConnected = connectedPlanetIds.has(node.id);
 
         // --- Use the centralized helper function for visibility logic ---
         if (!shouldDisplayItem(isPlanetConnected, hasNoConnections, isCreatingConnection, state, 'planet')) {
@@ -65,7 +74,6 @@ const drawPlanets = (
         const animDuration = PLANET_HOVER_ANIMATION_MS;
 
         const anim = state.hoveredPlanetAnimation;
-        const now = performance.now();
 
         const growingAnim = anim?.growing;
         const shrinkingAnim = anim?.shrinking;

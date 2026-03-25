@@ -26,6 +26,7 @@ import { keplerMiniatureSystemPreset } from './presets/keplerMiniatureSystem';
 import { glieseLaplaceResonancePreset } from './presets/glieseLaplaceResonance';
 import { goldenSpiralPreset } from './presets/goldenSpiral';
 import { musicalHarmonyPreset } from './presets/musicalHarmony';
+import { geocentricBalletPreset } from './presets/geocentricBallet';
 
 export const PRESETS: Record<string, Preset> = {
     "Venus Pentagram": venusPentagramPreset,
@@ -54,4 +55,5 @@ export const PRESETS: Record<string, Preset> = {
     "Flowering Plant": floweringPlantPreset,
     "Geocentric Clock": geocentricClockPreset,
     "Electric Field": electricFieldPreset,
+    "Geocentric Ballet": geocentricBalletPreset,
 };

@@ -26,17 +26,37 @@ export interface PresetTransitionState {
     documentName: string;
     startDate?: Date;
     endDate?: Date | null;
+    isPlaying?: boolean;
     useRealisticPhysics: boolean;
     ellipticalOrbits: boolean;
     logarithmicOrbits: boolean;
     orbitalInclination: boolean;
     renderMode: 'orthographic' | 'perspective';
-    ambientMotionMode: 'none' | 'orbit' | 'wobble' | 'drift';
+    ambientMotionMode: 'none' | 'orbit' | 'wobble' | 'drift' | 'figure8' | 'spiral' | 'survey' | 'float';
     lineBlendMode: GlobalCompositeOperation;
     lineDriftAxis: 'x' | 'z';
     enableLineZDrift: boolean;
     isSkyboxEnabled: boolean;
     skyboxImage: string;
+    showLiveConnections?: boolean;
+    showOrbits?: boolean;
+    showPlanets?: boolean;
+    showLines?: boolean;
+    showLabels?: boolean;
+    isSparkleMode?: boolean;
+    isMyceliumMode?: boolean;
+    showUnconnectedLabels?: boolean;
+    showUnconnectedPlanets?: boolean;
+    useGradientBackground?: boolean;
+    showBackgroundColor?: boolean;
+    showNebula?: boolean;
+    showStars?: boolean;
+    showStarColors?: boolean;
+    webGLStarsOpposeDrift?: boolean;
+    lineColorMode?: 'constant' | 'distance' | 'orbit';
+    lineGradient?: { color: string; position: number; id: string }[];
+    orbitBlendMode?: GlobalCompositeOperation;
+    debugDoFMode?: 'none' | 'coc' | 'depth' | 'cap';
   };
 }
 

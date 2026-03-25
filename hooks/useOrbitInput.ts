@@ -10,8 +10,8 @@ import { getGizmoPaths, hitTestGizmo, getProjectedVector, getGizmoButtons } from
 import * as THREE from 'three';
 
 type UseOrbitInputProps = {
-    mainCanvasRef: React.RefObject<HTMLCanvasElement>;
-    orbitIdCanvasRef: React.RefObject<HTMLCanvasElement>;
+    mainCanvasRef: React.RefObject<HTMLCanvasElement | null>;
+    orbitIdCanvasRef: React.RefObject<HTMLCanvasElement | null>;
     idToNodeIdMapRef: React.MutableRefObject<Map<number, number>>;
 };
 
@@ -322,7 +322,7 @@ export const useOrbitInput = ({
                     updateUI({ notification: `Pivot snapped to line.` });
                 } else {
                     // 2. Fallback: Raycast to Ecliptic Plane (Z=0)
-                    const visualClickPoint = unprojectOnEcliptic(e.clientX, e.clientY, mainCanvasRef.current, s);
+                    const visualClickPoint = unprojectOnEcliptic(e.clientX, e.clientY, mainCanvasRef.current!, s);
                     const worldPoint3D = { x: visualClickPoint.x, y: visualClickPoint.y, z: 0 };
                     
                     // Transform World Point -> View Space

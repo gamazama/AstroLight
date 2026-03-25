@@ -1,13 +1,13 @@
 
 import { useRef, useCallback, useEffect } from 'react';
 import { useAppStore } from '../store/appStore';
-// FIX: Import SimulationState to resolve 'Cannot find name' error.
 import type { AppState, CelestialBodyData, VisualsState, Connection, SimulationState } from '../types';
 import { STAR_SYSTEMS } from '../data/starSystems';
 import { calculateFrameUpdate } from './renderer/simulationUpdate';
 import { calculateZOffsets } from '../utils/zOffsetCalculations';
 import { lerp } from '../utils/mathUtils';
 import { FOV_LERP_FACTOR, FRAME_TIME_SMOOTHING_FACTOR, Z_OFFSET_LERP_FACTOR, ZOOM_LERP_FACTOR } from '../constants';
+import { registerFrameCallback, unregisterFrameCallback } from './renderLoop';
 
 // --- Camera Transition Tuning Constants (co-located from global state) ---
 const ORTHO_HANDOVER_FOV = 29.9;
@@ -30,9 +30,7 @@ export const useSimulationLoop = () => {
         return { ...basePlanetData, ...state.planetDataOverrides[name] };
     }, []);
 
-    const animationFrameId = useRef<number | undefined>(undefined);
     const lastFrameTime = useRef<number>(performance.now());
-    const wasHidden = useRef(document.hidden);
     const smoothedFrameTime = useRef(0);
     
     // Track current velocity of ambient motion for smooth transitions (Rotation, Tilt, PanX, PanY)
@@ -41,21 +39,11 @@ export const useSimulationLoop = () => {
     const runSimulationStep = useCallback(() => {
         const frameStartTime = performance.now();
 
-        if (document.hidden) {
-            wasHidden.current = true;
-            animationFrameId.current = requestAnimationFrame(runSimulationStep);
-            return;
-        }
+        let s = useAppStore.getState();
 
-        if (wasHidden.current) {
-            wasHidden.current = false;
-            lastFrameTime.current = performance.now();
-        }
-
-        let s = useAppStore.getState(); // Read latest state directly from the store
-        
         const now = performance.now();
-        const delta = now - lastFrameTime.current;
+        // Cap delta at 100ms to handle tab-away gracefully (replaces wasHidden logic)
+        const delta = Math.min(now - lastFrameTime.current, 100);
         lastFrameTime.current = now;
         const deltaTimeInSeconds = delta / 1000;
 
@@ -244,7 +232,7 @@ export const useSimulationLoop = () => {
         if (Object.keys(ambientUpdates).length > 0) updateSimulation(ambientUpdates as Partial<AppState>);
 
 
-        const isSimulating = s.isPlaying && (s.connections.length > 0 || s.endDate !== null || s.lineHistory.some(l => l.isDying) || s.isPresetTransitioning);
+        const isSimulating = s.isPlaying && (s.connections.length > 0 || s.endDate !== null || s.dyingLineCount > 0 || s.isPresetTransitioning);
         let frameUpdate: ReturnType<typeof calculateFrameUpdate>;
 
         if (isSimulating) {
@@ -253,7 +241,7 @@ export const useSimulationLoop = () => {
             frameUpdate = {
                 newTime: s.isPlaying ? s.time + s.timeSpeed * 60 * deltaTimeInSeconds : s.time,
                 finalHistory: s.lineHistory, finalParticles: s.particles,
-                shouldStop: false, newLines: [],
+                shouldStop: false, newLines: [], dyingLineCount: s.dyingLineCount,
             };
         }
         
@@ -264,6 +252,7 @@ export const useSimulationLoop = () => {
             time: frameUpdate.newTime,
             lineHistory: frameUpdate.finalHistory,
             particles: frameUpdate.finalParticles,
+            dyingLineCount: frameUpdate.dyingLineCount ?? 0,
             actualZoom: newActualZoom,
             actualFov: newActualFov,
             actualZOffsets: newOffsets,
@@ -276,13 +265,10 @@ export const useSimulationLoop = () => {
             showNotification('**End date** reached. Simulation stopped.');
         }
 
-        animationFrameId.current = requestAnimationFrame(runSimulationStep);
     }, [getCelestialBody, updateFrameData, updateUI, updateSimulation, updateVisuals, showNotification, resetHistory]);
 
     useEffect(() => {
-        animationFrameId.current = requestAnimationFrame(runSimulationStep);
-        return () => {
-            if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
-        };
+        registerFrameCallback('simulation', runSimulationStep, 0);
+        return () => unregisterFrameCallback('simulation');
     }, [runSimulationStep]);
 };

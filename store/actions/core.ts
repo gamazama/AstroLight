@@ -7,6 +7,26 @@ import { initialSoundState } from '../../AstroSound/soundStore';
 import { MS_PER_DAY, EPOCH_DATE } from '../../constants';
 import { clearLastLinePositions } from '../../hooks/renderer/simulationUpdate';
 
+/**
+ * Shallow equality check that avoids JSON.stringify overhead.
+ * Handles primitives, arrays (shallow element comparison), and object references.
+ */
+const shallowEqual = (a: unknown, b: unknown): boolean => {
+    if (a === b) return true;
+    if (a == null || b == null) return a === b;
+    if (typeof a !== typeof b) return false;
+    if (Array.isArray(a) && Array.isArray(b)) {
+        if (a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) return false;
+        }
+        return true;
+    }
+    // For objects, compare by reference (already covers most cases since
+    // temporal state stores snapshots that only change on undo/redo commits)
+    return false;
+};
+
 const pluck = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> => {
     const result = {} as Pick<T, K>;
     keys.forEach(key => {
@@ -316,11 +336,11 @@ export const createCoreActions = (set: StoreSet, get: StoreGet) => {
 
             for (const key in historicalState) {
                 const typedKey = key as keyof typeof historicalState;
-                if (JSON.stringify(s[typedKey]) !== JSON.stringify(historicalState[typedKey])) {
-                    (changes as any)[typedKey] = historicalState[typedKey];
+                if (!shallowEqual(s[typedKey], historicalState[typedKey])) {
+                    (changes as Record<string, unknown>)[typedKey] = historicalState[typedKey];
                 }
             }
-            
+
             if (s.documentName !== newPresent.documentName) {
                 changes.documentName = newPresent.documentName;
             }
@@ -349,8 +369,8 @@ export const createCoreActions = (set: StoreSet, get: StoreGet) => {
 
             for (const key in historicalState) {
                 const typedKey = key as keyof typeof historicalState;
-                if (JSON.stringify(s[typedKey]) !== JSON.stringify(historicalState[typedKey])) {
-                    (changes as any)[typedKey] = historicalState[typedKey];
+                if (!shallowEqual(s[typedKey], historicalState[typedKey])) {
+                    (changes as Record<string, unknown>)[typedKey] = historicalState[typedKey];
                 }
             }
 

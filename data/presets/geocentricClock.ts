@@ -38,7 +38,7 @@ export const geocentricClockPreset: Preset = {
     }
   ],
   "settings": {
-    "startDate": "2025-11-25T16:03:40.286Z",
+    "startDate": new Date("2025-11-25T16:03:40.286Z"),
     "endDate": null,
     "timeSpeed": 7.244,
     "useRealisticPhysics": true,

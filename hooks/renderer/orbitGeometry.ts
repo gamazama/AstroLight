@@ -149,12 +149,17 @@ export const getProjectedOrbitPaths = (
     if (basePath3D.length < 2) return null;
     
     const offset = state.actualZOffsets[node.name] ?? 0;
-    
-    // Apply Z-offset (visual stacking)
-    const finalPath3D = basePath3D.map(p => ({ ...p, z: p.z + offset }));
-    
-    // Project to 2D
-    const path2D = finalPath3D.map(pos => project2D(pos, canvas, state));
+
+    // Single pass: apply Z-offset and project to 2D simultaneously
+    const len = basePath3D.length;
+    const finalPath3D = new Array(len);
+    const path2D = new Array(len);
+    for (let i = 0; i < len; i++) {
+        const p = basePath3D[i];
+        const offset3D = { x: p.x, y: p.y, z: p.z + offset };
+        finalPath3D[i] = offset3D;
+        path2D[i] = project2D(offset3D, canvas, state);
+    }
 
     return { path3D: finalPath3D, path2D };
 };

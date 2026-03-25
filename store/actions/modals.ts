@@ -4,7 +4,6 @@ export const createModalActions = (set: StoreSet, get: StoreGet) => ({
     closeConfirmationDialog: () => {
         set({ confirmationDialog: null });
     },
-    closeAiAnalysisModal: () => set({ isAiAnalysisModalOpen: false }),
     openJplDebugModal: (planetName: string) => {
         const pathInfo = get().highPrecisionPaths[planetName];
         if (pathInfo && pathInfo.rawData) {

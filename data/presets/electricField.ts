@@ -24,7 +24,7 @@ export const electricFieldPreset: Preset = {
     }
   ],
   "settings": {
-    "startDate": "2025-11-27T13:52:57.303Z",
+    "startDate": new Date("2025-11-27T13:52:57.303Z"),
     "endDate": null,
     "timeSpeed": 500,
     "useRealisticPhysics": true,

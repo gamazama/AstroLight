@@ -9,7 +9,7 @@ import type { UIState } from './uiState';
 import type { SoundState } from '../AstroSound/types';
 import type { AppState } from './state';
 
-type FrameData = Pick<SimulationState, 'time' | 'lineHistory' | 'particles'> &
+type FrameData = Pick<SimulationState, 'time' | 'lineHistory' | 'particles' | 'dyingLineCount'> &
                  Pick<CoreVisualsState, 'actualZoom' | 'actualFov' | 'actualZOffsets'>;
 
 // This interface consolidates all handler functions into a single, strongly-typed object.
@@ -57,7 +57,7 @@ export interface CoreActions {
     // Misc AppController Actions
     toggleRenderMode: () => void;
     setFov: (fov: number) => void;
-    handleStartSandbox: (options?: { skipTransition?: boolean }) => void;
+    handleStartSandbox: (options?: { skipTransition?: boolean; disableBeginnerMode?: boolean }) => void;
     handleGlobalMouseUp: () => void;
 
     // History Actions
@@ -198,4 +198,11 @@ export interface CoreActions {
     expandLayerExclusively: (layerToExpand: string, forceOpen?: boolean) => void;
     
     onSaveImage: () => void;
+    incrementInteractionCount: (featureId: string) => void;
+    setSelectedConnectionId: (id: number | null) => void;
+
+    // Sound Graph Geometry/Scaffold
+    updateNodeGeometry: (nodeId: string, geometry: { x: number; y: number; width: number; height: number }) => void;
+    checkScaffoldIntersections: (movedNodeIds: Set<string>) => void;
+    groupSelectionInScaffold: () => void;
 }

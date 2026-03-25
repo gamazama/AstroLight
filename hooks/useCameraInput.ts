@@ -15,7 +15,7 @@ const wrapAngle = (angle: number): number => {
 
 
 export const useCameraInput = (
-    canvasRef: React.RefObject<HTMLCanvasElement>
+    canvasRef: React.RefObject<HTMLCanvasElement | null>
 ) => {
     const { updateUI, updateVisuals, adjustParameter } = useAppStore.getState().actions;
     
@@ -138,7 +138,10 @@ export const useCameraInput = (
             }
             
             if (s.hoveredPlanetId !== null || s.isResettingCamera) return;
-            
+
+            // Block camera interaction while a scrub key is held (covers the timer delay period too)
+            if (interactionState.heldScrubKeys.size > 0) return;
+
             if (e.button === 0) { // Left-click for rotation
                 if (s.isBrushMode && !e.altKey) return;
                 

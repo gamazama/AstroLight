@@ -55,9 +55,9 @@ export const createJplActions = (set: StoreSet, get: StoreGet) => ({
                 },
                 jplFetchStatus: { ...state.jplFetchStatus, [planet.name]: 'success' }
             }));
-        } catch (error: any) {
-            console.error(`Failed to fetch JPL data for ${planet.name}:`, error);
-            get().actions.showNotification(`**${planet.name} Fetch Error**: ${error.message}`, 5000);
+        } catch (error) {
+            if (import.meta.env.DEV) console.error(`Failed to fetch JPL data for ${planet.name}:`, error);
+            get().actions.showNotification(`**${planet.name} Fetch Error**: ${error instanceof Error ? error.message : 'Unknown error'}`, 5000);
             set(state => ({ jplFetchStatus: { ...state.jplFetchStatus, [planet.name]: 'error' } }));
         }
         

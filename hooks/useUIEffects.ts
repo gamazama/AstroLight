@@ -7,7 +7,7 @@ import { useAppStore } from '../store/appStore';
 import { shallow } from 'zustand/shallow';
 
 interface UIEffectsProps {
-    canvasRef: React.RefObject<HTMLCanvasElement>;
+    canvasRef: React.RefObject<HTMLCanvasElement | null>;
 }
 
 export const useUIEffects = ({ canvasRef }: UIEffectsProps) => {

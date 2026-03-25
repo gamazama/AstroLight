@@ -4,7 +4,7 @@ import { smoothEase, lerp } from '../utils/mathUtils';
 
 const PANEL_ANIMATION_DURATION = 500; // ms
 
-export const useCollapseAnimation = (isCollapsed: boolean, contentRef: React.RefObject<HTMLDivElement>) => {
+export const useCollapseAnimation = (isCollapsed: boolean, contentRef: React.RefObject<HTMLDivElement | null>) => {
     const [style, setStyle] = useState<React.CSSProperties>({
         height: isCollapsed ? 0 : undefined,
         overflow: isCollapsed ? 'hidden' : undefined, // Initialize correctly based on prop

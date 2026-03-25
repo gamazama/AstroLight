@@ -19,7 +19,7 @@ export const keplerMiniatureSystemPreset: Preset = {
         { "id": 5, "from": 7, "to": 8, "color": "#e5de73", "persistenceMultiplier": 5 }
     ],
     "settings": {
-        "startDate": "2025-11-24T21:37:28.338Z",
+        "startDate": new Date("2025-11-24T21:37:28.338Z"),
         "endDate": null,
         "timeSpeed": 5,
         "useRealisticPhysics": false,

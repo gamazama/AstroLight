@@ -31,7 +31,7 @@ export const theTowerPreset: Preset = {
         { "id": 1760868816457.3452, "from": 9, "to": 18, "color": "#9E57D4", "persistenceMultiplier": 50 }
     ],
     "settings": {
-        "startDate": "2025-11-25T06:55:10.575Z",
+        "startDate": new Date("2025-11-25T06:55:10.575Z"),
         "endDate": null,
         "timeSpeed": 100,
         "useRealisticPhysics": false,

@@ -71,8 +71,8 @@ function getClipSpacePivot(state: AppState): THREE.Vector2 | null {
 }
 
 const shouldPreload = (): boolean => {
-    const nav = navigator as any;
-    if (nav.deviceMemory && nav.deviceMemory < 4) {
+    const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+    if (memory && memory < 4) {
         return false;
     }
     return true;
@@ -98,13 +98,13 @@ async function loadAndCacheTexture(imageUrl: string): Promise<THREE.Texture | nu
 
         const imageBitmap = await createImageBitmap(blob);
 
-        const texture = new THREE.Texture(imageBitmap);
+        const texture = new THREE.Texture(imageBitmap as unknown as HTMLImageElement);
         texture.needsUpdate = true;
         
         texture.generateMipmaps = true;
         texture.minFilter = THREE.LinearMipmapLinearFilter; 
         texture.magFilter = THREE.LinearFilter;
-        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.encoding = THREE.sRGBEncoding;
 
         const renderer = threeJsBridge.renderer;
         if (renderer) {
@@ -115,7 +115,7 @@ async function loadAndCacheTexture(imageUrl: string): Promise<THREE.Texture | nu
         return texture;
 
     } catch (error) {
-        console.error(`Error loading texture ${imageUrl}:`, error);
+        if (import.meta.env.DEV) console.error(`Error loading texture ${imageUrl}:`, error);
         return null;
     }
 }
@@ -144,11 +144,11 @@ async function triggerPerformanceLoad(imageUrl: string, objects: BackgroundObjec
         const response = await fetch(imageUrl);
         const blob = await response.blob();
         const imageBitmap = await createImageBitmap(blob);
-        const texture = new THREE.Texture(imageBitmap);
+        const texture = new THREE.Texture(imageBitmap as unknown as HTMLImageElement);
         texture.needsUpdate = true;
         texture.generateMipmaps = true;
         texture.minFilter = THREE.LinearMipmapLinearFilter; 
-        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.encoding = THREE.sRGBEncoding;
         
         if (objects.activeTexture) {
             objects.activeTexture.dispose();
@@ -167,7 +167,7 @@ async function triggerPerformanceLoad(imageUrl: string, objects: BackgroundObjec
         objects.transitionPhase = 'FADING_IN';
 
     } catch (e) {
-        console.error("Performance load failed", e);
+        if (import.meta.env.DEV) console.error("Performance load failed", e);
         objects.transitionPhase = 'IDLE'; 
     } finally {
         objects.isLoadingTexture = false;

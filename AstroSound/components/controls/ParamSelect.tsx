@@ -86,7 +86,7 @@ export const ParamSelect: React.FC<ParamSelectProps> = ({ param, value, onChange
                 className="w-full px-2 py-1.5 bg-black/20 border border-white/20 rounded-md text-white text-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#667eea]"
             >
                 {isMixed && <option value="MIXED" disabled>Mixed</option>}
-                {param.options?.map(opt => (
+                {param.options?.filter((opt): opt is { value: string | number; label: string } => 'value' in opt).map(opt => (
                     <option key={opt.value.toString()} value={opt.value}>{opt.label}</option>
                 ))}
             </select>

@@ -20,7 +20,7 @@ export const innerWormholePreset: Preset = {
         { "id": 1760832985786.7703, "from": 2, "to": 4, "color": "#B03A97", "persistenceMultiplier": 25 }
     ],
     "settings": {
-        "startDate": "2025-11-25T06:55:10.575Z",
+        "startDate": new Date("2025-11-25T06:55:10.575Z"),
         "endDate": null,
         "timeSpeed": 60.81350012787179,
         "useRealisticPhysics": false,

@@ -2,23 +2,24 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useAppStore } from '../store/appStore';
 import { checkOrbitCache, getProjectedOrbitPaths } from './renderer/orbitGeometry';
-import { 
-    updateAnimationStates, 
-    drawOrbitAndMask, 
-    drawCursorHighlight, 
-    drawConnectionNoodle, 
-    drawSuccessAnimation, 
+import {
+    updateAnimationStates,
+    drawOrbitAndMask,
+    drawCursorHighlight,
+    drawConnectionNoodle,
+    drawSuccessAnimation,
     drawInteractionText,
-    drawPivotGizmo, // Added
-    AnimatingOrbit 
+    drawPivotGizmo,
+    AnimatingOrbit
 } from './renderer/orbitDrawing';
 import { calculateInteractionText, TextState } from './renderer/orbitInteractionText';
 import type { Vector3D } from '../types';
+import { registerFrameCallback, unregisterFrameCallback } from './renderLoop';
 
 
 type UseOrbitRendererProps = {
-    orbitDisplayCanvasRef: React.RefObject<HTMLCanvasElement>;
-    orbitIdCanvasRef: React.RefObject<HTMLCanvasElement>;
+    orbitDisplayCanvasRef: React.RefObject<HTMLCanvasElement | null>;
+    orbitIdCanvasRef: React.RefObject<HTMLCanvasElement | null>;
     idToNodeIdMapRef: React.MutableRefObject<Map<number, number>>;
 };
 
@@ -43,6 +44,10 @@ export const useOrbitRenderer = ({
         displayText: '',
     });
 
+    // --- Cached canvas contexts ---
+    const ctxDisplayRef = useRef<CanvasRenderingContext2D | null>(null);
+    const ctxIdRef = useRef<CanvasRenderingContext2D | null>(null);
+
     // --- Zustand state and actions ---
     const stateForAnimationRef = useRef(useAppStore.getState());
     const actions = useAppStore.getState().actions;
@@ -61,8 +66,10 @@ export const useOrbitRenderer = ({
         const idCanvas = orbitIdCanvasRef.current;
         if (!displayCanvas || !idCanvas) return;
 
-        const ctxDisplay = displayCanvas.getContext('2d');
-        const ctxId = idCanvas.getContext('2d', { willReadFrequently: true });
+        if (!ctxDisplayRef.current) ctxDisplayRef.current = displayCanvas.getContext('2d');
+        if (!ctxIdRef.current) ctxIdRef.current = idCanvas.getContext('2d', { willReadFrequently: true });
+        const ctxDisplay = ctxDisplayRef.current;
+        const ctxId = ctxIdRef.current;
         if (!ctxDisplay || !ctxId) return;
 
         animationTimeRef.current += 0.02;
@@ -120,19 +127,7 @@ export const useOrbitRenderer = ({
     }, [orbitDisplayCanvasRef, orbitIdCanvasRef, actions, idToNodeIdMapRef]);
 
     useEffect(() => {
-        let animationFrameId: number | null = null;
-        
-        const renderLoop = () => {
-            animate();
-            animationFrameId = requestAnimationFrame(renderLoop);
-        };
-
-        renderLoop();
-
-        return () => {
-            if (animationFrameId !== null) {
-                cancelAnimationFrame(animationFrameId);
-            }
-        };
+        registerFrameCallback('orbits', animate, 30);
+        return () => unregisterFrameCallback('orbits');
     }, [animate]);
 };

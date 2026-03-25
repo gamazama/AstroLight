@@ -239,7 +239,7 @@ const SettingsPanel: React.FC = () => {
                             </label>
                             <select
                                 value={debugDoFMode}
-                                onChange={(e) => adjustParameter({ debugDoFMode: e.target.value as any })}
+                                onChange={(e) => adjustParameter({ debugDoFMode: e.target.value as 'none' | 'coc' | 'depth' | 'cap' })}
                                 className="w-full px-2 py-1.5 bg-black/30 border border-white/20 rounded-md text-white text-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#667eea]"
                             >
                                 <option value="none">None (Normal)</option>

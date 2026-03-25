@@ -22,7 +22,8 @@ export const calculateInteractionText = (state: AppState, textStateRef: React.Mu
 
     const connectionSourceNodeId = state.canvasConnectingFromNodeId ?? state.planetConnectionDragInfo?.fromNodeId ?? null;
     const fromNode = connectionSourceNodeId ? state.planetNodes.find(n => n.id === connectionSourceNodeId) : null;
-    const hoveredNodeForText = state.canvasHoverState ? state.planetNodes.find(n => n.id === state.canvasHoverState.planetId) : null;
+    const hoverState = state.canvasHoverState;
+    const hoveredNodeForText = hoverState ? state.planetNodes.find(n => n.id === hoverState.planetId) : null;
 
     if (fromNode) { 
         if (textState.mode === 'hover-planet' || textState.mode === 'idle') {

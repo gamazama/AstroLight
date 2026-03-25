@@ -6,8 +6,9 @@ import * as backgroundController from './renderer/webgl/backgroundController';
 import * as lineController from './renderer/webgl/foregroundController';
 import * as particleController from './renderer/webgl/particleController';
 import { lerp } from '../utils/mathUtils';
+import { registerFrameCallback, unregisterFrameCallback } from './renderLoop';
 
-export const useWebGLRenderer = (canvasRef: React.RefObject<HTMLCanvasElement>) => {
+export const useWebGLRenderer = (canvasRef: React.RefObject<HTMLCanvasElement | null>) => {
     const stateForAnimationRef = useRef(useAppStore.getState());
     const backgroundCameraState = useRef({ fov: 75, zoom: 1 });
     const isFirstRender = useRef(true); // To handle initial hook call state for React 18 StrictMode
@@ -81,12 +82,10 @@ export const useWebGLRenderer = (canvasRef: React.RefObject<HTMLCanvasElement>) 
         
         // --- Main Animation Loop ---
         const clock = new THREE.Clock();
-        let frameId: number;
-        
-        const animate = () => {
-            frameId = requestAnimationFrame(animate);
 
-            const delta = clock.getDelta();
+        const animate = () => {
+            // Cap delta at 100ms to handle tab-away gracefully
+            const delta = Math.min(clock.getDelta(), 0.1);
             const elapsedTime = clock.getElapsedTime();
             const state = stateForAnimationRef.current;
             
@@ -199,7 +198,7 @@ export const useWebGLRenderer = (canvasRef: React.RefObject<HTMLCanvasElement>) 
             renderer.clearDepth();
             renderer.render(foregroundScene, activeForegroundCamera);
         };
-        frameId = requestAnimationFrame(animate);
+        registerFrameCallback('webgl', animate, 10);
 
         // --- Event Listeners & Cleanup ---
         const handleResize = () => {
@@ -224,7 +223,7 @@ export const useWebGLRenderer = (canvasRef: React.RefObject<HTMLCanvasElement>) 
 
         return () => {
             window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(frameId);
+            unregisterFrameCallback('webgl');
             
             // Dispose controllers and their objects
             backgroundController.dispose(backgroundObjects);

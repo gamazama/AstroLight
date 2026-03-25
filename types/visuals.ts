@@ -94,7 +94,7 @@ export interface CoreVisualsState {
     actualZOffsets: Record<string, number>;
     enableLineZDrift: boolean;
     lineZDriftSpeed: number;
-    lineDriftAxis: 'z';
+    lineDriftAxis: 'x' | 'z';
     orbitOpacity: number;
     connectedOrbitOpacity: number;
     isBrushMode: boolean;

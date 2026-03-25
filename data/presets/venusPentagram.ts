@@ -59,7 +59,7 @@ export const venusPentagramPreset: Preset = {
         }
     ],
     "settings": {
-        "startDate": "2025-11-12T19:45:35.036Z",
+        "startDate": new Date("2025-11-12T19:45:35.036Z"),
         "endDate": null,
         "timeSpeed": 1.091,
         "useRealisticPhysics": false,
@@ -102,9 +102,6 @@ export const venusPentagramPreset: Preset = {
         "enableLineZDrift": false,
         "lineZDriftSpeed": 0,
         "lineDriftAxis": "z",
-        "decayNoiseStrength": 40,
-        "decayNoiseScale": 0.005,
-        "decayNoiseSpeed": 0.025,
         "isSparkleMode": true,
         "particleQuantity": 63,
         "particleSize": 0.6,

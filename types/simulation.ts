@@ -49,6 +49,7 @@ export interface SimulationState {
   
   // --- Data History & Cache ---
   lineHistory: Line[];
+  dyingLineCount: number;
   particles: Particle[];
   highPrecisionPaths: Record<string, { data: Vector3D[]; startDate: string; stepInDays: number; rawData: string; }>;
 }

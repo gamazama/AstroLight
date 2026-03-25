@@ -17,7 +17,7 @@ export interface SoundNodeParameter {
     name:string;
     label: string;
     type: 'number' | 'slider' | 'select' | 'text' | 'color' | 'connection_select' | 'multi-select-checkbox' | 'planet_select';
-    options?: { value: string | number, label: string }[];
+    options?: ({ value: string | number; label: string } | { group: string; items: { value: string | number; label: string }[] })[];
     min?: number;
     max?: number;
     hardMin?: number; // New: Allow extended range for text input

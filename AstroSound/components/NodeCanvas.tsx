@@ -150,7 +150,7 @@ const NodeCanvas: React.FC = () => {
                     <Node 
                         key={node.id} 
                         node={node} 
-                        onMouseDown={interactionHandlers.handleMouseDown} 
+                        onMouseDown={(e, id) => interactionHandlers.handleMouseDown(e, id)}
                         onMouseUp={interactionHandlers.handleMouseUp}
                         onPortMouseDown={{ input: () => {}, output: () => {} }}
                         onPortMouseUp={() => {}}
@@ -175,7 +175,7 @@ const NodeCanvas: React.FC = () => {
                     <Node 
                         key={node.id} 
                         node={node} 
-                        onMouseDown={interactionHandlers.handleMouseDown} 
+                        onMouseDown={(e, id) => interactionHandlers.handleMouseDown(e, id)}
                         onMouseUp={interactionHandlers.handleMouseUp}
                         onPortMouseDown={{
                             input: (e, toNodeId, toInput) => interactionHandlers.handlePortMouseDown(e, toNodeId, toInput, 'input'),

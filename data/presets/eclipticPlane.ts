@@ -30,7 +30,7 @@ export const eclipticPlanePreset: Preset = {
         { "id": 1760834307218.2268, "from": 3, "to": 4, "color": "#85A29E", "persistenceMultiplier": 7 }
     ],
     "settings": {
-        "startDate": "2025-11-24T22:04:01.190Z",
+        "startDate": new Date("2025-11-24T22:04:01.190Z"),
         "endDate": null,
         "timeSpeed": 672.9766562843178,
         "useRealisticPhysics": true,

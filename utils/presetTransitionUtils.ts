@@ -30,14 +30,14 @@ const animatedSizeMap: { [key: string]: (keyof (VisualsState & SimulationState))
 
 export const setupFadeAnimations = (
     fromState: Partial<AppState>,
-    endConfig: any,
+    endConfig: Partial<AppState>,
     toState: Partial<AppState>
 ) => {
     const effectiveFromState = { ...fromState };
     const effectiveToState = { ...toState };
     const initialUpdates: Partial<AppState> = {};
 
-    const isTruthy = (val: any) => {
+    const isTruthy = (val: unknown) => {
         if (typeof val === 'string') return val !== 'none';
         return !!val;
     };
@@ -53,15 +53,15 @@ export const setupFadeAnimations = (
             const toVal = endConfig[boolKey as keyof typeof endConfig];
 
             if (!isTruthy(fromVal) && isTruthy(toVal)) { // Turning ON (fade-in / grow)
-                (initialUpdates as any)[boolKey] = toVal;
+                (initialUpdates as Record<string, unknown>)[boolKey] = toVal;
                 propKeys.forEach(opKey => {
                     // Force start at 0 so it lerps up to target
-                    (effectiveFromState as any)[opKey] = defaultValue;
+                    (effectiveFromState as Record<string, unknown>)[opKey] = defaultValue;
                 });
             } else if (isTruthy(fromVal) && !isTruthy(toVal)) { // Turning OFF (fade-out / shrink)
                 propKeys.forEach(opKey => {
                     // Force target to 0 so it lerps down from current
-                    (effectiveToState as any)[opKey] = defaultValue;
+                    (effectiveToState as Record<string, unknown>)[opKey] = defaultValue;
                 });
             }
         }
@@ -75,7 +75,7 @@ export const setupFadeAnimations = (
 
 export const calculateCameraModeUpdates = (
     fromState: Partial<AppState>,
-    endConfig: any,
+    endConfig: Partial<AppState>,
     currentState: AppState,
     elapsed: number
 ) => {
@@ -109,7 +109,7 @@ export const calculateCameraModeUpdates = (
 export const calculateDriftUpdates = (
     fromState: Partial<AppState>,
     toState: Partial<AppState>,
-    endConfig: any,
+    endConfig: Partial<AppState>,
     currentState: AppState,
     easedProgress: number
 ) => {
@@ -168,12 +168,12 @@ const isColor = (key: string): boolean => key.toLowerCase().includes('color');
 
 export const interpolateProperties = (
     keys: (keyof (VisualsState & SimulationState))[],
-    fromState: any,
-    toState: any,
+    fromState: Partial<VisualsState & SimulationState>,
+    toState: Partial<VisualsState & SimulationState>,
     easedProgress: number,
     excludedKeys: Set<string>
 ) => {
-    const updates: any = {};
+    const updates: Partial<VisualsState & SimulationState> = {};
     for (const key of keys) {
         if (excludedKeys.has(key as string)) continue;
 
@@ -186,10 +186,10 @@ export const interpolateProperties = (
                 const toRgb = hexToRgb(toValue);
                 if (fromRgb && toRgb) {
                     const interpolatedRgb = lerpRGB(fromRgb, toRgb, easedProgress);
-                    updates[key] = rgbToHex(interpolatedRgb);
+                    (updates as Record<string, unknown>)[key] = rgbToHex(interpolatedRgb);
                 }
             } else if (typeof fromValue === 'number' && typeof toValue === 'number') {
-                updates[key] = lerp(fromValue, toValue, easedProgress);
+                (updates as Record<string, unknown>)[key] = lerp(fromValue, toValue, easedProgress);
             }
         }
     }
@@ -228,7 +228,7 @@ export const calculateConnectionTransition = (
     return currentConnections;
 };
 
-export const calculateMidpointUpdates = (currentState: AppState, endConfig: any) => {
+export const calculateMidpointUpdates = (currentState: AppState, endConfig: Partial<AppState> & { system?: string; planetNodes?: { name: string; color: string; id: number }[]; planetDataOverrides?: Record<string, unknown> }) => {
     const updates: Partial<AppState> = {};
     
     if (currentState.currentSystem !== endConfig.system) {
@@ -247,9 +247,9 @@ export const calculateMidpointUpdates = (currentState: AppState, endConfig: any)
     ];
 
     keysToSync.forEach(key => {
-        const val = endConfig[key];
+        const val = (endConfig as Record<string, unknown>)[key];
         if (val !== undefined && JSON.stringify(currentState[key as keyof AppState]) !== JSON.stringify(val)) {
-            (updates as any)[key] = val;
+            (updates as Record<string, unknown>)[key] = val;
         }
     });
 

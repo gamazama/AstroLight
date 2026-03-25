@@ -49,10 +49,10 @@ export const createInstrumentActions = (set: StoreSet, get: StoreGet) => ({
                     }
                 }
                 return { id: `conn_prefab_${now + i}`, fromNodeId: fromId, fromOutput: c.fromOutput, toNodeId: toId, toInput: c.toInput, pathPoints: [] };
-            }).filter((c): c is SoundConnection => c !== null);
+            }).filter((c): c is NonNullable<typeof c> => c !== null) as SoundConnection[];
         
         set(state => ({
-            graph: { nodes: [...state.graph.nodes, ...newNodes], connections: [...state.graph.connections, ...newConns] },
+            graph: { ...state.graph, nodes: [...state.graph.nodes, ...newNodes], connections: [...state.graph.connections, ...newConns] },
             soundCreator: { ...state.soundCreator, selectedNodeIds: newNodes.map(n => n.id) }
         }));
     },
@@ -91,7 +91,7 @@ export const createInstrumentActions = (set: StoreSet, get: StoreGet) => ({
         const s = get();
         const instrument = s.instruments.find(i => i.name === instrumentName);
         if (!instrument) {
-            console.warn("Instrument not found:", instrumentName);
+            if (import.meta.env.DEV) console.warn("Instrument not found:", instrumentName);
             return;
         }
 

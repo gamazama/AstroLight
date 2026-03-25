@@ -19,7 +19,7 @@ export const galacticDriftPreset: Preset = {
         { "id": 506, "from": 5, "to": 6, "color": "#20DA80", "persistenceMultiplier": 2 }
     ],
     "settings": {
-        "startDate": "2025-11-24T22:04:01.190Z",
+        "startDate": new Date("2025-11-24T22:04:01.190Z"),
         "endDate": null,
         "timeSpeed": 149,
         "useRealisticPhysics": false,

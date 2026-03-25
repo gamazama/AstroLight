@@ -195,7 +195,7 @@ const LinesLayer: React.FC<LinesLayerProps> = ({
                             </label>
                             <select
                                 value={visuals.lineColorMode}
-                                onChange={(e) => adjustParameter({ lineColorMode: e.target.value as any })}
+                                onChange={(e) => adjustParameter({ lineColorMode: e.target.value as 'constant' | 'distance' | 'orbit' })}
                                 className="w-full px-2 py-1.5 bg-black/30 border border-white/20 rounded-md text-white text-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#667eea]"
                             >
                                 {colorModes.map(m => (

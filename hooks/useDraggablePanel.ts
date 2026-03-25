@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 interface UseDraggablePanelProps {
-    panelRef: React.RefObject<HTMLDivElement>;
+    panelRef: React.RefObject<HTMLDivElement | null>;
     position: { x: number; y: number } | null;
     onPositionChange: (position: { x: number; y: number }) => void;
 }

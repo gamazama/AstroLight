@@ -19,7 +19,7 @@ export const musicalHarmonyPreset: Preset = {
         { "id": 3, "from": 1, "to": 5, "color": "#6B81FF", "persistenceMultiplier": 2 }
     ],
     "settings": {
-        "startDate": "2025-11-24T22:04:01.190Z",
+        "startDate": new Date("2025-11-24T22:04:01.190Z"),
         "endDate": null,
         "timeSpeed": 6.053,
         "useRealisticPhysics": false,

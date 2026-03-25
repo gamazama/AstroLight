@@ -63,7 +63,7 @@ export const createPresetActions = (set: StoreSet, get: StoreGet) => ({
     
                 const fromState: Partial<AppState> = {};
                 INTERPOLATABLE_PRESET_KEYS.forEach(key => {
-                    (fromState as any)[key] = startState[key as keyof AppState];
+                    (fromState as Record<string, unknown>)[key] = startState[key as keyof AppState];
                 });
                 Object.assign(fromState, {
                     currentSystem: startState.currentSystem, // Captured for transition logic
@@ -80,7 +80,7 @@ export const createPresetActions = (set: StoreSet, get: StoreGet) => ({
                 const toState: Partial<AppState> = {};
                 const presetSettings = preset.settings || {};
                 INTERPOLATABLE_PRESET_KEYS.forEach(key => {
-                    (toState as any)[key] = (presetSettings as any)[key] ?? (fullInitialState as any)[key];
+                    (toState as Record<string, unknown>)[key] = (presetSettings as Record<string, unknown>)[key] ?? (fullInitialState as Record<string, unknown>)[key];
                 });
 
                 // Normalize target angles
@@ -208,9 +208,9 @@ export const createPresetActions = (set: StoreSet, get: StoreGet) => ({
                 // Mark beginner feature
                 get().actions.markFeatureUsed('presets_opened');
     
-            } catch (e: any) {
-                console.error("Preset transition error:", e);
-                set({ notification: `**Error**: ${e.message}` });
+            } catch (e) {
+                if (import.meta.env.DEV) console.error("Preset transition error:", e);
+                set({ notification: `**Error**: ${e instanceof Error ? e.message : 'Unknown error'}` });
             }
         };
     

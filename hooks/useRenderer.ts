@@ -3,12 +3,13 @@ import type { AppState } from '../types/state';
 import type { CelestialBodyData } from '../types/celestial';
 import { drawScene } from './renderer/drawing';
 import { useAppStore } from '../store/appStore';
+import { registerFrameCallback, unregisterFrameCallback } from './renderLoop';
 
 export const useRenderer = (
-    canvasRef: React.RefObject<HTMLCanvasElement>,
+    canvasRef: React.RefObject<HTMLCanvasElement | null>,
 ) => {
-    const animationFrameId = useRef<number | undefined>(undefined);
     const stateForAnimationRef = useRef(useAppStore.getState());
+    const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 
     useEffect(() => {
         const unsubscribe = useAppStore.subscribe(
@@ -20,13 +21,17 @@ export const useRenderer = (
     const animate = useCallback(() => {
         const s = stateForAnimationRef.current;
         const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d');
+        if (!canvas) return;
 
-        if (canvas && ctx) {
+        // Cache the context on first use
+        if (!ctxRef.current) {
+            ctxRef.current = canvas.getContext('2d');
+        }
+        const ctx = ctxRef.current;
+
+        if (ctx) {
             drawScene(ctx, canvas, s, s.actions.getCelestialBody, s.actualZOffsets);
         }
-
-        animationFrameId.current = requestAnimationFrame(animate);
     }, [canvasRef]);
 
     useEffect(() => {
@@ -36,17 +41,17 @@ export const useRenderer = (
         const handleResize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            // Context can be invalidated on resize in some browsers
+            ctxRef.current = canvas.getContext('2d');
         };
         handleResize();
         window.addEventListener('resize', handleResize);
-        
-        animationFrameId.current = requestAnimationFrame(animate);
+
+        registerFrameCallback('renderer', animate, 20);
 
         return () => {
             window.removeEventListener('resize', handleResize);
-            if (animationFrameId.current) {
-                cancelAnimationFrame(animationFrameId.current);
-            }
+            unregisterFrameCallback('renderer');
         };
     }, [animate]);
 };

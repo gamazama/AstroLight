@@ -18,7 +18,7 @@ export const goldenSpiralPreset: Preset = {
         { "id": 1764057858264.5515, "from": 1, "to": 5, "color": "#B92100", "persistenceMultiplier": 50 }
     ],
     "settings": {
-        "startDate": "2025-11-24T22:04:01.190Z",
+        "startDate": new Date("2025-11-24T22:04:01.190Z"),
         "endDate": null,
         "timeSpeed": 1.698,
         "useRealisticPhysics": false,

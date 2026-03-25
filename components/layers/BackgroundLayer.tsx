@@ -225,7 +225,7 @@ const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ isExpanded, onToggleE
                                 <div 
                                     className="w-6 h-6 rounded-md border border-white/30 cursor-pointer"
                                     style={{ backgroundColor: webGLStarColor }}
-                                    onClick={(e) => { e.stopPropagation(); openColorPicker({ type: 'background', key: 'webGLStarColor' as any }, e, webGLStarColor); }}
+                                    onClick={(e) => { e.stopPropagation(); openColorPicker({ type: 'background', key: 'webGLStarColor' }, e, webGLStarColor); }}
                                     title="Set star color tint"
                                 ></div>
                             )

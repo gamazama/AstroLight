@@ -17,9 +17,8 @@ export const usePerformanceOptimization = () => {
         if (hasAutoDetected.current) return;
         hasAutoDetected.current = true;
 
-        const nav = navigator as any;
-        const memory = nav.deviceMemory; // RAM in GB (approx)
-        const cores = nav.hardwareConcurrency;
+        const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory; // RAM in GB (approx)
+        const cores = navigator.hardwareConcurrency;
 
         // Heuristic for "Low Spec"
         // - RAM < 4GB
@@ -28,7 +27,7 @@ export const usePerformanceOptimization = () => {
         const isLowSpec = (memory && memory < 4) || (cores && cores < 4);
 
         if (isLowSpec) {
-            console.log("[AstroLight] Low-spec device detected. Enabling Performance Mode.");
+            if (import.meta.env.DEV) console.log("[AstroLight] Low-spec device detected. Enabling Performance Mode.");
             actions.updateUI({ isPerformanceMode: true });
             actions.showNotification("Performance Mode enabled for your device.");
         }

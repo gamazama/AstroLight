@@ -34,10 +34,10 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
         const scaleFactorY = targetResolution / mainCanvas.height;
         const scaleFactorX = targetResolution / mainCanvas.width;
 
-        const renderState: AppState = { 
-            ...state, 
-            viewOffsetX: state.viewOffsetX * scaleFactorX, 
-            viewOffsetY: state.viewOffsetY * scaleFactorY, 
+        const renderState: AppState = {
+            ...state,
+            viewOffsetX: state.viewOffsetX * scaleFactorX,
+            viewOffsetY: state.viewOffsetY * scaleFactorY,
             lineWidth: state.lineWidth * Math.pow(scaleFactorY, 2),
             liveLineWidth: state.liveLineWidth * Math.pow(scaleFactorY, 2),
             starSize: state.starSize * scaleFactorY,
@@ -45,19 +45,20 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
             nebulaOpacity: state.nebulaOpacity,
             planetSizeMultiplier: state.planetSizeMultiplier,
             labelFontSize: state.labelFontSize * scaleFactorY,
-            // In perspective mode, we must scale the individual size of each particle because 
+            // In perspective mode, we must scale the individual size of each particle because
             // gl_PointSize is pixels, and we are increasing the pixel count.
             // In orthographic mode, the zoom scaling logic (zoom * scale) handles this naturally.
-            particles: state.renderMode === 'perspective' 
-                ? state.particles.map(p => ({ ...p, size: p.size * scaleFactorY })) 
+            particles: state.renderMode === 'perspective'
+                ? state.particles.map(p => ({ ...p, size: p.size * scaleFactorY }))
                 : state.particles,
-            targetZoom: state.renderMode === 'orthographic' ? state.targetZoom * scaleFactorY : state.targetZoom, 
-            actualZoom: state.renderMode === 'orthographic' ? state.actualZoom * scaleFactorY : state.actualZoom 
+            targetZoom: state.renderMode === 'orthographic' ? state.targetZoom * scaleFactorY : state.targetZoom,
+            actualZoom: state.renderMode === 'orthographic' ? state.actualZoom * scaleFactorY : state.actualZoom
         };
 
         if (renderer && backgroundScene && backgroundCamera && foregroundScene && foregroundCamera && foregroundOrthographicCamera && foregroundCameraPivot && backgroundObjects && lineRenderer && liveLineRenderer && particleRenderer) {
             const originalSize = new THREE.Vector2();
             renderer.getSize(originalSize);
+
             renderer.setSize(targetResolution, targetResolution, false);
             const originalAutoClear = renderer.autoClear;
             renderer.autoClear = false;
@@ -65,13 +66,13 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
             backgroundCamera.aspect = 1;
             const baseFovRad_hr = renderState.actualFov * (Math.PI / 180);
             const zoomDampingFactor = 0.2;
-            
+
             // Apply orthographic scaling fix to match useWebGLRenderer
             let effectiveZoom = renderState.actualZoom;
             if (renderState.renderMode === 'orthographic') {
                 effectiveZoom = effectiveZoom / 2.5;
             }
-            
+
             const skyboxZoom_hr = 1 + (effectiveZoom - 1) * zoomDampingFactor;
             const effectiveFovRad_hr = 2 * Math.atan(Math.tan(baseFovRad_hr / 2) / skyboxZoom_hr);
             backgroundCamera.fov = effectiveFovRad_hr * (180 / Math.PI);
@@ -103,7 +104,7 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
                 foregroundOrthographicCamera.bottom = (-frustumHeight / 2) - worldPanY;
                 foregroundOrthographicCamera.updateProjectionMatrix();
             }
-            
+
             const rotMultiplier = (renderState.enableLineZDrift && renderState.lineDriftAxis === 'x') ? 1 : -1;
             const rotationToUse = renderState.rotation * rotMultiplier;
             foregroundCameraPivot.rotation.order = 'ZYX';
@@ -124,7 +125,7 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
 
             renderer.setSize(originalSize.width, originalSize.height, false);
             renderer.autoClear = originalAutoClear;
-            
+
             const originalAspect = originalSize.width / originalSize.height;
             backgroundCamera.aspect = originalAspect;
             if (backgroundCamera.view) backgroundCamera.clearViewOffset();
@@ -144,25 +145,25 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
 
         const getCelestialBody = (name: string): CelestialBodyData => ({ ...STAR_SYSTEMS[renderState.currentSystem]?.celestialBodies.find(p => p.name === name)!, ...renderState.planetDataOverrides[name] });
         const zOffsets = Object.fromEntries(calculateZOffsets(renderState, getCelestialBody));
-        
+
         drawScene(ctx, offscreenCanvas, renderState, getCelestialBody, zOffsets, false);
-        
+
         ctx.lineWidth = 1.5 * scaleFactorY;
         drawOrbits(ctx, offscreenCanvas, renderState, getCelestialBody, zOffsets);
 
         // --- Watermark Generation ---
         if (options.showWatermark) {
-            const margin = 40 * (targetResolution / 4500); 
-            const fontSize = 40 * (targetResolution / 4500); 
+            const margin = 40 * (targetResolution / 4500);
+            const fontSize = 40 * (targetResolution / 4500);
             const lineHeight = fontSize * 1.4;
-            
+
             ctx.font = `bold ${fontSize}px sans-serif`;
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)'; 
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
             ctx.textBaseline = 'bottom';
 
             // Gather Stats
             const system = renderState.currentSystem;
-            
+
             let realism = "Simple Physics";
             if (renderState.useRealisticPhysics) {
                 if (renderState.useJplHorizons) {
@@ -180,7 +181,7 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
             const dateRange = `${formatDate(renderState.startDate)} - ${formatDate(simEndDate)}`;
             const years = (renderState.time / 365.25).toFixed(1);
             const userDate = new Date().toLocaleDateString();
-            
+
             const connectionsList = renderState.connections.map(c => {
                 const from = renderState.planetNodes.find(p => p.id === c.from)?.name;
                 const to = renderState.planetNodes.find(p => p.id === c.to)?.name;
@@ -202,7 +203,7 @@ export const renderHighResolutionImage = (state: AppState, options: { showWaterm
                  const maxWidth = offscreenCanvas.width - (margin * 2);
                  let text = `Connections: ${connectionsList}`;
                  const metrics = ctx.measureText(text);
-                 
+
                  if (metrics.width > maxWidth) {
                      while (ctx.measureText(text + "...").width > maxWidth && text.length > 0) {
                          text = text.slice(0, -1);

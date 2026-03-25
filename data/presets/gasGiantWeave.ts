@@ -21,7 +21,7 @@ export const gasGiantWeavePreset: Preset = {
         { "id": 1761826351174.6602, "from": 9, "to": 5, "color": "#E67E22", "persistenceMultiplier": 50 }
     ],
     "settings": {
-        "startDate": "2025-11-25T06:55:10.575Z",
+        "startDate": new Date("2025-11-25T06:55:10.575Z"),
         "endDate": null,
         "timeSpeed": 95.94,
         "useRealisticPhysics": false,

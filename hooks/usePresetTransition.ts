@@ -35,7 +35,8 @@ export const usePresetTransition = () => {
             const updates: Partial<AppState> = {};
 
             // 1. Boolean Toggle Animation (Fade In/Out & Grow/Shrink)
-            const { effectiveFromState, effectiveToState, initialUpdates } = setupFadeAnimations(fromState, endConfig, toState);
+            const endConfigPartial = endConfig as unknown as Partial<AppState>;
+            const { effectiveFromState, effectiveToState, initialUpdates } = setupFadeAnimations(fromState, endConfigPartial, toState);
             
             if (Object.keys(initialUpdates).length > 0 && !didApplyFadeInFix.current) {
                 updateSimulation(initialUpdates);
@@ -43,11 +44,11 @@ export const usePresetTransition = () => {
             }
 
             // 2. Camera Mode Transition
-            const { updates: cameraUpdates, isSwitchingToOrtho } = calculateCameraModeUpdates(fromState, endConfig, s, elapsed);
+            const { updates: cameraUpdates, isSwitchingToOrtho } = calculateCameraModeUpdates(fromState, endConfigPartial, s, elapsed);
             Object.assign(updates, cameraUpdates);
         
             // 3. Drift Transition
-            const driftUpdates = calculateDriftUpdates(fromState, toState, endConfig, s, easedProgress);
+            const driftUpdates = calculateDriftUpdates(fromState, toState, endConfigPartial, s, easedProgress);
             Object.assign(updates, driftUpdates);
 
             // 4. Speed Transition
@@ -93,7 +94,7 @@ export const usePresetTransition = () => {
 
 
             // 6. System Swap V-Curve Logic
-            const isSystemSwap = (fromState as any).currentSystem !== endConfig.system;
+            const isSystemSwap = (fromState as Partial<AppState>).currentSystem !== endConfig.system;
             
             if (isSystemSwap) {
                 // Calculate V-Curve Multiplier: 1 -> 0 -> 1
@@ -126,7 +127,7 @@ export const usePresetTransition = () => {
                     }
 
                     if (typeof currentVal === 'number') {
-                         (updates as any)[prop] = currentVal * vCurveMultiplier;
+                         (updates as Record<string, unknown>)[prop] = currentVal * vCurveMultiplier;
                     }
                 });
             }
@@ -153,7 +154,7 @@ export const usePresetTransition = () => {
             const midpoint = duration / 2;
             
             if (elapsed >= midpoint) {
-                 const midpointUpdates = calculateMidpointUpdates(s, endConfig);
+                 const midpointUpdates = calculateMidpointUpdates(s, endConfigPartial as Partial<AppState> & { system?: string; planetNodes?: { name: string; color: string; id: number }[]; planetDataOverrides?: Record<string, unknown> });
                  Object.assign(updates, midpointUpdates);
             }
             

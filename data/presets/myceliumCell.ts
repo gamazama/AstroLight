@@ -20,7 +20,7 @@ export const myceliumCellPreset: Preset = {
         { "id": 1764021912849.8567, "from": 7, "to": 9, "color": "#F0AB0A", "persistenceMultiplier": 49 }
     ],
     "settings": {
-        "startDate": "2025-11-24T22:04:01.190Z",
+        "startDate": new Date("2025-11-24T22:04:01.190Z"),
         "endDate": null,
         "timeSpeed": 55.976,
         "useRealisticPhysics": true,

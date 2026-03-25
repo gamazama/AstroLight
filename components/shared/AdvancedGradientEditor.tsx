@@ -174,7 +174,7 @@ const AdvancedGradientEditor: React.FC<AdvancedGradientEditorProps> = ({ stops, 
         const data = JSON.stringify(knotsRef.current.map(({ position, color, bias, interpolation }) => ({ position, color, bias, interpolation })));
         navigator.clipboard.writeText(data).then(() => {
              // Could add toast notification here
-             console.log('Gradient copied to clipboard');
+             if (import.meta.env.DEV) console.log('Gradient copied to clipboard');
         });
     };
 
@@ -196,7 +196,7 @@ const AdvancedGradientEditor: React.FC<AdvancedGradientEditorProps> = ({ stops, 
                 alert("Invalid gradient data on clipboard.");
             }
         } catch (e) {
-            console.error("Paste failed", e);
+            if (import.meta.env.DEV) console.error("Paste failed", e);
         }
     };
 

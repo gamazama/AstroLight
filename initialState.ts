@@ -27,6 +27,7 @@ export const initialSimulationState: SimulationState = {
     ellipticalOrbitsT: 1, // Matches ellipticalOrbits: true
     orbitalInclinationT: 1, // Matches orbitalInclination: true
     lineHistory: [],
+    dyingLineCount: 0,
     particles: [],
     highPrecisionPaths: {},
 };

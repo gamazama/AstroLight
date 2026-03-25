@@ -9,20 +9,20 @@ import { APP_URL, APP_VERSION } from '../../constants';
 import { clearLastLinePositions } from '../../hooks/renderer/simulationUpdate';
 import { keyMap, reverseKeyMap } from '../../data/serializationConfig';
 
-declare const pako: any;
+declare const pako: { deflate: (data: string | Uint8Array) => Uint8Array; inflate: (data: Uint8Array, options?: { to?: string }) => string };
 
 /**
  * A helper to remap connection IDs when loading a config for a different star system.
  */
 export const remapConnections = (
-    connections: any[] | undefined,
+    connections: Connection[] | undefined,
     configPlanetNodes: { id: number, name: string }[] | undefined,
     newPlanetNodes: PlanetNode[]
 ): Connection[] => {
     const nameToIdMap = new Map(newPlanetNodes.map(p => [p.name, p.id]));
     const safeConfigPlanetNodes = configPlanetNodes || [];
-    
-    return (connections || []).map((conn: any) => {
+
+    return (connections || []).map((conn) => {
         const fromName = safeConfigPlanetNodes.find(p => p.id === conn.from)?.name;
         const toName = safeConfigPlanetNodes.find(p => p.id === conn.to)?.name;
         const fromId = fromName ? nameToIdMap.get(fromName) : undefined;
@@ -124,9 +124,9 @@ export const createConfigActions = (set: StoreSet, get: StoreGet) => {
             try {
                 _executeApplyConfig(preset, presetName);
                 set({ notification: `**Preset '${presetName}' loaded**.` });
-            } catch (e: any) {
-                console.error("Static preset load error:", e);
-                set({ notification: `**Error**: ${e.message}` });
+            } catch (e) {
+                if (import.meta.env.DEV) console.error("Static preset load error:", e);
+                set({ notification: `**Error**: ${e instanceof Error ? e.message : 'Unknown error'}` });
             }
         },
         importConfig: (file: File) => {
@@ -165,12 +165,12 @@ export const createConfigActions = (set: StoreSet, get: StoreGet) => {
                         _executeApplyConfig(config, filename);
                         set({ notification: `**Preset '${filename}' imported** successfully.` });
 
-                    } catch (err: any) {
-                        console.error("Import error:", err);
+                    } catch (err) {
+                        if (import.meta.env.DEV) console.error("Import error:", err);
                         if (err instanceof SyntaxError && err.message.includes('JSON.parse')) {
                             set({ notification: `**Error**: Failed to parse .ass file. Please ensure it's a valid AstroLight™ save file.` });
                         } else {
-                            set({ notification: `**Error**: ${err.message}` });
+                            set({ notification: `**Error**: ${err instanceof Error ? err.message : 'Unknown error'}` });
                         }
                     }
                 };
@@ -204,11 +204,12 @@ export const createConfigActions = (set: StoreSet, get: StoreGet) => {
                     _executeApplyConfig(config, 'Shared Creation');
                 } else if (config.ms) {
                     const deminifiedSettings: Partial<AppState> = {};
-                    // FIX: Use Object.keys to ensure 'shortKey' is a string and avoid implicit symbol conversion errors.
-                    for (const shortKey of Object.keys(config.ms)) {
-                        const longKey = (reverseKeyMap as any)[shortKey];
+                    const reverseMap = reverseKeyMap as Record<string, string>;
+                    const ms = config.ms as Record<string, unknown>;
+                    for (const shortKey of Object.keys(ms)) {
+                        const longKey = reverseMap[shortKey];
                         if (longKey) {
-                            (deminifiedSettings as any)[longKey] = (config.ms as any)[shortKey];
+                            (deminifiedSettings as Record<string, unknown>)[longKey] = ms[shortKey];
                         }
                     }
                     const fullConfig: Preset = {
@@ -232,7 +233,7 @@ export const createConfigActions = (set: StoreSet, get: StoreGet) => {
                 url.searchParams.delete('config');
                 window.history.replaceState({}, document.title, url.toString());
             } catch (e) {
-                console.error("Share link error:", e);
+                if (import.meta.env.DEV) console.error("Share link error:", e);
                 set({ notification: '**Error**: Invalid share link.' });
             }
         },

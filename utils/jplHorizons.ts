@@ -158,7 +158,7 @@ export const fetchPlanetaryPath = async (
         const responseText = await response.text();
 
         if (!response.ok) {
-            console.error("JPL HORIZONS API Error Response:", responseText);
+            if (import.meta.env.DEV) console.error("JPL HORIZONS API Error Response:", responseText);
             throw new Error(`Failed to fetch data from JPL HORIZONS (Status: ${response.status}). The API may be unavailable or the request may be invalid.`);
         }
         
@@ -167,7 +167,7 @@ export const fetchPlanetaryPath = async (
         return { parsedData, rawData: responseText, stepInDays };
 
     } catch (error) {
-        console.error("Error fetching or parsing planetary path:", error);
+        if (import.meta.env.DEV) console.error("Error fetching or parsing planetary path:", error);
         if (error instanceof Error) {
             if (error.message.includes('Failed to fetch')) {
                  throw new Error('A network error occurred. Please check your internet connection and the CORS proxy status.');

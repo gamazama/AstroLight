@@ -2,6 +2,8 @@
 import type { AppState } from '../types';
 
 interface InteractionState {
+    /** Keys currently held for scrubbing (s/z/d/v). Blocks camera drag for the full hold duration, including the timer delay. */
+    heldScrubKeys: Set<string>;
     scrub: {
         startX: number;
         startY: number;
@@ -32,6 +34,7 @@ interface InteractionState {
 }
 
 export const interactionState: InteractionState = {
+    heldScrubKeys: new Set(),
     scrub: {
         startX: 0,
         startY: 0,

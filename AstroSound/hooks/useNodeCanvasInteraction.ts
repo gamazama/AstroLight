@@ -6,7 +6,7 @@ import type { SoundNode } from '../types';
 import { ALL_NODE_TYPES } from '../components/nodeTypes';
 
 interface UseNodeCanvasInteractionProps {
-    canvasRef: React.RefObject<HTMLDivElement>;
+    canvasRef: React.RefObject<HTMLDivElement | null>;
     onNodeMenu: (pos: { x: number, y: number } | null) => void;
     nodeMenu: { x: number, y: number } | null;
     getPortPosition: (nodeId: string, portName: string, portType: 'input' | 'output') => { x: number, y: number } | null;
@@ -239,7 +239,7 @@ export const useNodeCanvasInteraction = ({ canvasRef, onNodeMenu, nodeMenu, getP
         };
     }, [actions, graph.nodes, scState.selectedNodeIds]);
 
-    const handleMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const handleMouseDown = useCallback((e: React.MouseEvent, _id?: string) => {
         const targetEl = e.target as HTMLElement;
         const targetNodeEl = targetEl.closest('.sound-node');
         if (nodeMenu) { onNodeMenu(null); return; }

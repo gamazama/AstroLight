@@ -359,16 +359,27 @@ export const calculateFrameUpdate = (
     const { newLines, newParticles } = _generateNewLinesAndParticles(s, newTime, driftAmount, getCelestialBody, zOffsets);
     
     // 5. Combine history and enforce max lines cap
-    let finalHistory = [...survivingHistory, ...newLines];
-    if (finalHistory.length > s.maxLines) {
-        finalHistory.splice(0, finalHistory.length - s.maxLines);
+    // Append new lines to surviving history in-place instead of spread-copying both arrays
+    if (newLines.length > 0) {
+        for (let i = 0; i < newLines.length; i++) survivingHistory.push(newLines[i]);
     }
-    
-    // 6. Update existing particles and combine with new ones
-    // The `updateParticles` function now returns a *new* array containing only the surviving particles.
-    const survivingParticles = updateParticles([...s.particles], driftAmount, s.lineDriftAxis || 'z', deltaTime, s.particleDrag, s.isPlaying);
-    const finalParticles = [...survivingParticles, ...newParticles];
+    if (survivingHistory.length > s.maxLines) {
+        survivingHistory.splice(0, survivingHistory.length - s.maxLines);
+    }
 
-    // 7. Return all computed next-frame state
-    return { newTime, finalHistory, finalParticles, shouldStop, newLines };
+    // 6. Update existing particles in-place and append new ones
+    // Pass the original array directly — updateParticles mutates in-place then filters dead.
+    const survivingParticles = updateParticles(s.particles, driftAmount, s.lineDriftAxis || 'z', deltaTime, s.particleDrag, s.isPlaying);
+    if (newParticles.length > 0) {
+        for (let i = 0; i < newParticles.length; i++) survivingParticles.push(newParticles[i]);
+    }
+
+    // 7. Count dying lines for O(1) check in simulation loop
+    let dyingLineCount = 0;
+    for (let i = 0; i < survivingHistory.length; i++) {
+        if (survivingHistory[i].isDying) dyingLineCount++;
+    }
+
+    // 8. Return all computed next-frame state
+    return { newTime, finalHistory: survivingHistory, finalParticles: survivingParticles, shouldStop, newLines, dyingLineCount };
 };

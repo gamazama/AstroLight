@@ -18,7 +18,7 @@ export const martianSpirographPreset: Preset = {
         { "id": 304, "from": 3, "to": 4, "color": "#8B90CF", "persistenceMultiplier": 13 }
     ],
     "settings": {
-        "startDate": "2025-11-24T21:37:28.338Z",
+        "startDate": new Date("2025-11-24T21:37:28.338Z"),
         "endDate": null,
         "timeSpeed": 2.032,
         "useRealisticPhysics": false,

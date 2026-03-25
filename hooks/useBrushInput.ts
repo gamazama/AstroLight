@@ -7,7 +7,7 @@ import { useAppStore } from '../store/appStore';
 import { BRUSH_SIZE_MAX, BRUSH_SIZE_MIN } from '../constants';
 
 export const useBrushInput = (
-    canvasRef: React.RefObject<HTMLCanvasElement>
+    canvasRef: React.RefObject<HTMLCanvasElement | null>
 ) => {
     const { updateSimulation, updateVisuals } = useAppStore.getState().actions;
 

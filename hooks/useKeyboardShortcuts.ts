@@ -117,12 +117,14 @@ export const useKeyboardShortcuts = () => {
 
             if (key === 's' && !state.isSpeedScrubbing) {
                 e.preventDefault();
+                interactionState.heldScrubKeys.add('s');
                 actions.startSpeedScrub();
                 actions.markFeatureUsed('speed_scrub_action'); // Track usage for beginner hint
                 return;
             }
             if (key === 'z') {
                 e.preventDefault();
+                interactionState.heldScrubKeys.add('z');
                 if (zKeyTimer.current === null && !state.isZOffsetScrubbing) {
                     zKeyTimer.current = window.setTimeout(() => {
                         actions.startZOffsetScrub();
@@ -133,6 +135,7 @@ export const useKeyboardShortcuts = () => {
             }
             if (key === 'd') {
                 e.preventDefault();
+                interactionState.heldScrubKeys.add('d');
                 if (dKeyTimer.current === null && !state.isDriftScrubbing) {
                     dKeyTimer.current = window.setTimeout(() => {
                         actions.startDriftScrub();
@@ -144,6 +147,7 @@ export const useKeyboardShortcuts = () => {
             }
             if (key === 'v') {
                 e.preventDefault();
+                interactionState.heldScrubKeys.add('v');
                 if (vKeyTimer.current === null && !state.isFovScrubbing) {
                     vKeyTimer.current = window.setTimeout(() => {
                         actions.startFovScrub();
@@ -171,6 +175,7 @@ export const useKeyboardShortcuts = () => {
 
         const handleKeyUp = (e: KeyboardEvent) => {
             const key = e.key.toLowerCase();
+            interactionState.heldScrubKeys.delete(key);
             if (key === 's' && state.isSpeedScrubbing) {
                 actions.stopSpeedScrub();
             }

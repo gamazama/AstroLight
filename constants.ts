@@ -2,9 +2,11 @@
 import type { CelestialBodyData } from './types/celestial';
 import type { VisualsState, SimulationState } from './types';
 
-export const APP_VERSION = '1.7.4';
+declare const __APP_VERSION__: string;
+export const APP_VERSION = __APP_VERSION__;
 
-export const APP_URL = 'https://astrolight-v1-7-4-152535429025.us-west1.run.app';
+/** Dynamically resolved from the current deployment URL (no trailing slash). */
+export const APP_URL = `${window.location.origin}${window.location.pathname.replace(/\/$/, '')}`;
 
 export const PIKACHU_GIF_URL = "https://gifdb.com/images/high/sad-tearful-pikachu-xiy9fai77rsazyy4.webp";
 
@@ -40,7 +42,7 @@ export const INTERPOLATABLE_PRESET_KEYS: (keyof (VisualsState & SimulationState)
     'labelColor', 'labelFontSize', 'labelOpacity', 'planetSizeMultiplier', 'planetOpacity', 'lineOpacityMultiplier',
     'lineWidth', 'lineDrawAngle', 'particleQuantity', 'particleSize', 'particleSpeed',
     'particleLifespan', 'particleDrag', 'targetFov', 'perspectiveFov', 'targetZOffset', 'lineZDriftSpeed', 'ambientMotionSpeed',
-    'decayNoiseStrength', 'decayNoiseScale', 'decayNoiseSpeed', 'backgroundColor1', 'backgroundColor2', 'skyboxOpacity',
+    'backgroundColor1', 'backgroundColor2', 'skyboxOpacity',
     'nebulaOpacity', 'nebulaParticleSize', 'nebulaYOffset', 'starCount', 'starSize', 'starOpacity',
     'starTwinkleAmount', 'webGLStarSpeed', 'webGLStarColor', 'liveLineWidth', 'liveLineOpacity',
     'particleDiamondRatio', 'particleGlowGamma', 'webglLineBrightness', 'lineSoftness', 'orbitOpacity',

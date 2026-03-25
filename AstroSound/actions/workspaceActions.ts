@@ -128,7 +128,7 @@ export const createWorkspaceActions = (set: StoreSet, get: StoreGet) => ({
                 set({ graph: processedGraph });
                 get().actions.showNotification("Sound Graph Loaded");
             } catch (err) {
-                console.error(err);
+                if (import.meta.env.DEV) console.error(err);
                 get().actions.showNotification("Error loading graph");
             }
         };

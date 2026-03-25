@@ -168,7 +168,7 @@ export const createConnectionActions = (set: StoreSet, get: StoreGet) => {
             set({ notification: `Persistence reset to **harmonic value** (${harmonicMultiplier}x)` });
         },
         clearConnectionLine: () => set({ connectionLine: null }),
-        createCanvasConnection: (fromId, toId) => createConnection(fromId, toId),
-        createUiConnection: (fromId, toId) => createConnection(fromId, toId),
+        createCanvasConnection: (fromId: number, toId: number) => createConnection(fromId, toId),
+        createUiConnection: (fromId: number, toId: number) => createConnection(fromId, toId),
     };
 };

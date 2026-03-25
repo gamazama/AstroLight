@@ -95,7 +95,7 @@ export const stardustBalletPreset: Preset = {
     }
   ],
   "settings": {
-    "startDate": "2025-11-27T12:17:05.426Z",
+    "startDate": new Date("2025-11-27T12:17:05.426Z"),
     "endDate": null,
     "timeSpeed": 10,
     "useRealisticPhysics": false,

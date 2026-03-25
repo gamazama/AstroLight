@@ -141,9 +141,9 @@ export const useSoundEngine = () => {
                 
                 updateUI({ soundEngineStatus: { isLoading: false, error: null } });
 
-            } catch (e: any) {
-                console.error('Failed to load AudioWorklet processor:', e);
-                const errorMessage = `Failed to load AudioWorklet modules. Check console for details. Message: ${e.message}`;
+            } catch (e) {
+                if (import.meta.env.DEV) console.error('Failed to load AudioWorklet processor:', e);
+                const errorMessage = `Failed to load AudioWorklet modules. Check console for details. Message: ${e instanceof Error ? e.message : 'Unknown error'}`;
                 updateUI({ soundEngineStatus: { isLoading: false, error: errorMessage } });
             } finally {
                 if (blobUrl) {
@@ -151,9 +151,9 @@ export const useSoundEngine = () => {
                 }
             }
 
-        } catch (e: any) {
-            console.error("Web Audio API is not supported in this browser", e);
-            const errorMessage = `Web Audio API is not supported in this browser. AstroSound™ Pro BETA cannot be initialized.\nMessage: ${e.message}`;
+        } catch (e) {
+            if (import.meta.env.DEV) console.error("Web Audio API is not supported in this browser", e);
+            const errorMessage = `Web Audio API is not supported in this browser. AstroSound™ Pro BETA cannot be initialized.\nMessage: ${e instanceof Error ? e.message : 'Unknown error'}`;
             updateUI({ soundEngineStatus: { isLoading: false, error: errorMessage } });
         }
     }, [updateUI, updateSound]);

@@ -64,7 +64,7 @@ export const trappistResonancePreset: Preset = {
         }
     ],
     "settings": {
-        "startDate": "2025-11-24T21:41:27.899Z",
+        "startDate": new Date("2025-11-24T21:41:27.899Z"),
         "endDate": null,
         "timeSpeed": 0.147,
         "useRealisticPhysics": false,

@@ -33,7 +33,7 @@ export const usePhysicsTransition = () => {
                 if (Math.abs(newT - targetT) < 0.001) {
                     newT = targetT;
                 }
-                (updates as any)[transition.key] = newT;
+                (updates as Record<string, number>)[transition.key] = newT;
                 needsAnimate = true;
             }
         }

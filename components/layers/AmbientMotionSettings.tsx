@@ -12,14 +12,14 @@ const AmbientMotionSettings: React.FC = () => {
     }), shallow);
 
     const modes = [
-        { id: 'none', label: 'Off' },
-        { id: 'orbit', label: 'Orbit' },
-        { id: 'wobble', label: 'Wobble' },
-        { id: 'drift', label: 'Drift' },
-        { id: 'figure8', label: 'Figure 8' },
-        { id: 'spiral', label: 'Spiral' },
-        { id: 'survey', label: 'Survey' },
-        { id: 'float', label: 'Float' },
+        { id: 'none' as const, label: 'Off' },
+        { id: 'orbit' as const, label: 'Orbit' },
+        { id: 'wobble' as const, label: 'Wobble' },
+        { id: 'drift' as const, label: 'Drift' },
+        { id: 'figure8' as const, label: 'Figure 8' },
+        { id: 'spiral' as const, label: 'Spiral' },
+        { id: 'survey' as const, label: 'Survey' },
+        { id: 'float' as const, label: 'Float' },
     ];
 
     return (
@@ -39,7 +39,7 @@ const AmbientMotionSettings: React.FC = () => {
                 {modes.map(mode => (
                     <button
                         key={mode.id}
-                        onClick={() => adjustParameter({ ambientMotionMode: mode.id as any })}
+                        onClick={() => adjustParameter({ ambientMotionMode: mode.id })}
                         className={`px-2 py-1.5 text-xs rounded-md transition-colors ${ambientMotionMode === mode.id ? 'bg-indigo-500 text-white' : 'bg-white/5 hover:bg-white/10 text-gray-300'}`}
                     >
                         {mode.label}

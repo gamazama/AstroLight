@@ -10,7 +10,8 @@ const FilterNodeViz: React.FC<FilterNodeVizProps> = ({ node }) => {
     const soundNodeOutputs = useAppStore(state => state.soundNodeOutputs);
 
     // Use the live cutoff value from the audio thread if available, otherwise fallback to the static param.
-    const liveCutoff = soundNodeOutputs[node.id]?.cutoff ?? node.params.cutoff;
+    const rawCutoff = soundNodeOutputs[node.id]?.cutoff ?? node.params.cutoff;
+    const liveCutoff = typeof rawCutoff === 'number' ? rawCutoff : (rawCutoff as number[])[0] ?? 1000;
 
     const { type, q: Q, gain: gainDb, slope } = node.params;
     const sampleRate = 48000; // Assume a standard sample rate for visualization

@@ -9,7 +9,7 @@ import { initialSimulationState, initialBackgroundState, initialVisualsState, in
 import { initialSoundState } from '../../AstroSound/soundStore';
 import { keyMap } from '../../data/serializationConfig';
 
-declare const pako: any;
+declare const pako: { deflate: (data: string | Uint8Array) => Uint8Array; inflate: (data: Uint8Array, options?: { to?: string }) => string };
 
 const fullInitialState = {
     ...initialSimulationState,
@@ -126,7 +126,7 @@ export const createExportActions = (set: StoreSet, get: StoreGet) => ({
                     set({ notification: '**Image Saved** successfully.' });
                 })
                 .catch(error => {
-                    console.error("Save image error:", error);
+                    if (import.meta.env.DEV) console.error("Save image error:", error);
                     set({ notification: `**Error**: ${error.message}` });
                 });
         }, 50);
@@ -153,9 +153,9 @@ export const createExportActions = (set: StoreSet, get: StoreGet) => ({
                 URL.revokeObjectURL(url);
                 set({ notification: `**${filename}** exported successfully.` });
                 get().actions.markFeatureUsed('export_obj');
-            } catch (e: any) {
-                console.error("Export OBJ Error:", e);
-                set({ notification: `**Error**: ${e.message}` });
+            } catch (e) {
+                if (import.meta.env.DEV) console.error("Export OBJ Error:", e);
+                set({ notification: `**Error**: ${e instanceof Error ? e.message : 'Unknown error'}` });
             }
         }, 50);
     },
@@ -176,9 +176,9 @@ export const createExportActions = (set: StoreSet, get: StoreGet) => ({
                 URL.revokeObjectURL(url);
                 set({ notification: `**${filename}** exported successfully.` });
                 get().actions.markFeatureUsed('export_svg');
-            } catch (e: any) {
-                console.error("Export SVG Error:", e);
-                set({ notification: `**Error**: ${e.message}` });
+            } catch (e) {
+                if (import.meta.env.DEV) console.error("Export SVG Error:", e);
+                set({ notification: `**Error**: ${e instanceof Error ? e.message : 'Unknown error'}` });
             }
         }, 50);
     },
@@ -186,13 +186,14 @@ export const createExportActions = (set: StoreSet, get: StoreGet) => ({
     shareConfiguration: () => {
         const state = get();
         
-        const minifiedSettings: { [key: string]: any } = {};
+        const minifiedSettings: Record<string, unknown> = {};
         
         for (const longKey of Object.keys(keyMap)) {
             const key = longKey as Extract<keyof AppState, string>;
             const shortKey = keyMap[key];
+            if (!shortKey) continue;
             const currentValue = state[key];
-            const defaultValue = fullInitialState[key];
+            const defaultValue = (fullInitialState as Record<string, unknown>)[key];
             
             let isDefault = false;
             if (key === 'planetDataOverrides') {
@@ -230,7 +231,7 @@ export const createExportActions = (set: StoreSet, get: StoreGet) => ({
                 set({ notification: '**Share link** copied to clipboard!' });
                 set({ shareSnapshotEffect: { startTime: performance.now() } });
             });
-        } catch (e) { console.error("Share error:", e); set({ notification: '**Error**: Could not create share link.' }); }
+        } catch (e) { if (import.meta.env.DEV) console.error("Share error:", e); set({ notification: '**Error**: Could not create share link.' }); }
     },
     exportConfig: (presetName?: string) => {
         const state = get();

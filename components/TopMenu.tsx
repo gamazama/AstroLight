@@ -129,7 +129,7 @@ const TopMenu: React.FC = () => {
                                     (e.target as HTMLInputElement).blur();
                                 }
                             }}
-                            className={`bg-transparent text-center font-medium w-full max-w-sm px-3 py-1 rounded-md transition-colors duration-200 hover:bg-white/5 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-white/20 pointer-events-auto ${
+                            className={`bg-transparent text-center text-sm font-medium w-full max-w-sm px-3 py-1 rounded-md transition-colors duration-200 hover:bg-white/5 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-white/20 pointer-events-auto ${
                                 state.documentName === 'Untitled Creation' ? 'text-transparent focus:text-white' : 'text-gray-300'
                             }`}
                             title="Edit name"

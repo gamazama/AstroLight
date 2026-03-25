@@ -1,4 +1,4 @@
-import type { StoreSet, StoreGet, Actions } from '../appStore';
+import type { StoreSet, StoreGet, Actions } from './appStore';
 import { createConnectionActions } from './actions/connections';
 import { createConfigActions } from './actions/config';
 import { createCoreActions } from './actions/core';
@@ -30,5 +30,7 @@ export const createAllActions = (set: StoreSet, get: StoreGet): Actions => {
         ...createModalActions(set, get),
         ...createPanelActions(set, get),
         ...createJplActions(set, get),
+
+        onSaveImage: () => { get().actions.markFeatureUsed('save_image_clicked'); },
     };
 };
