@@ -90,6 +90,21 @@ const AboutContent: React.FC = () => {
                 </div>
             </div>
 
+            <div className="mt-6 mb-8 border-t border-white/10 pt-6">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">Also by Guy Zack</p>
+                <a href="https://gamazama.github.io/GMT-fractals/" target="_blank" rel="noopener noreferrer"
+                    className="inline-block text-indigo-400 hover:text-indigo-300 font-semibold text-sm transition-colors">
+                    GMT Fractals
+                </a>
+                <p className="text-gray-400 text-xs mt-1 mb-3">A fractal exploration tool</p>
+                <div className="flex justify-center gap-4 text-xs">
+                    <a href="https://github.com/gamazama/GMT-fractals" target="_blank" rel="noopener noreferrer"
+                        className="text-gray-500 hover:text-gray-300 transition-colors">GitHub</a>
+                    <a href="https://www.reddit.com/r/GMT_fractals/" target="_blank" rel="noopener noreferrer"
+                        className="text-gray-500 hover:text-gray-300 transition-colors">Reddit</a>
+                </div>
+            </div>
+
             <div className="text-xs text-gray-500 uppercase tracking-wider">
                 Powered By
                 <div className="flex justify-center items-center gap-4 mt-2">
