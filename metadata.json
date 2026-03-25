@@ -1,0 +1,5 @@
+{
+  "name": "AstroLight™ v1.7.4",
+  "description": "An interactive web application that visualizes the geometric patterns created by the orbital relationships of planets in our solar system. Users can add planets, connect them, and watch as beautiful spirograph-like patterns emerge over time. The application offers extensive controls for time, zoom, perspective, and visual effects, allowing for the creation and exploration of stunning celestial art.",
+  "requestFramePermissions": []
+}
